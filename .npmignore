@@ -1,0 +1,5 @@
+*.tgz
+tsconfig.json
+tslint.json
+src/
+test/

@@ -1,0 +1,44 @@
+{
+	"name": "logfile-service",
+	"version": "0.0.1",
+	"description": "Logfile Service",
+	"main": "dst/index.js",
+	"types": "dst/index.d.ts",
+	"hopmepage": "https://github.com/rbaghbanli/logfile-service",
+	"bugs": "https://github.com/rbaghbanli/logfile-service/issues",
+	"author": "Riad Baghbanli <riad@baghbanli.com>",
+	"contributors": [
+		{
+			"name": "Riad Baghbanli",
+			"email": "riad@baghbanli.com"
+		}
+	],
+	"keywords": [
+		"Data",
+		"Logger",
+		"File",
+		"Text",
+		"Binary"
+	],
+	"scripts": {
+		"clean": "rimraf dst/* && rimraf *.tgz",
+		"lint": "tslint --project tsconfig.json",
+		"predebug": "npm run clean",
+		"debug": "tsc --build",
+		"prebuild": "npm run clean",
+		"build": "tsc --build",
+		"prepare": "npm run build"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/rbaghbanli/logfile-service.git"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@types/node": "~14.17.9",
+		"rimraf": "~3.0.2",
+		"eslint": "~7.31.0",
+		"typescript": "~4.3.5"
+	}
+}
