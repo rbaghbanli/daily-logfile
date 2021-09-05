@@ -1,6 +1,6 @@
 {
 	"name": "logfile-service",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Logfile Service",
 	"main": "dst/index.js",
 	"types": "dst/index.d.ts",
@@ -14,11 +14,10 @@
 		}
 	],
 	"keywords": [
-		"Data",
-		"Logger",
-		"File",
-		"Text",
-		"Binary"
+		"Logfile",
+		"Service",
+		"log",
+		"file"
 	],
 	"scripts": {
 		"clean": "rimraf dst/* && rimraf *.tgz",
