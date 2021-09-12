@@ -35,31 +35,34 @@ export default class Logfile_Service {
 				now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds() ];
 		let change = 2; // date changed or first entry
 		if ( this._last_entry_timer ) {
+			change = 0; // neither date nor time changed
 			for ( let i = 0; i < 6; ++i ) {
 				if ( timer[ i ] != this._last_entry_timer[ i ] ) {
 					change = i < 3 ? 2 : 1; // date or time changed
 					break;
 				}
 			}
-			change = 0; // neither date nor time changed
 		}
 		if ( change > 1 ) {
 			if ( this._stream && !this._stream.writableEnded ) {
 				this._stream.end();
 			}
-			const date_str =
-				`${ timer[ 0 ].toString() }-${ timer[ 1 ].toString().padStart( 2, '0' ) }-${  timer[ 2 ].toString().padStart( 2, '0' ) }`;
-			this._stream = fs.createWriteStream( `${ this._dir }/${ date_str }${ this._ext }`, { flags: 'a' } );
+			const fp = `${ this._dir }/${ timer[ 0 ].toString() }-\
+				${ timer[ 1 ].toString().padStart( 2, '0' ) }-\
+				${ timer[ 2 ].toString().padStart( 2, '0' ) }${ this._ext }`;
+			this._stream = fs.createWriteStream( fp, { flags: 'a' } );
 			this._stream.on( 'error', err => {
 				this._last_entry_timer = undefined;
-				process.stdout.write( `[${ now.toISOString() }] failure to write entry: ${ text }\n...on error: ${ err }\n` );
+				process.stderr.write( `[${ now.toISOString() }] failure to write entry: ${ text }\n\
+					...on error: ${ err }\n` );
 			} );
 		}
 		if ( change > 0 ) {
-			const time_str =
-				`[${ timer[ 3 ].toString().padStart( 2, '0' ) }:${ timer[ 4 ].toString().padStart( 2, '0' ) }:${ timer[ 5 ].toString().padStart( 2, '0' ) }]\n`;
-			this._stream?.write( time_str );
-			process.stdout.write( time_str );
+			const ts = `[${ timer[ 3 ].toString().padStart( 2, '0' ) }:\
+				${ timer[ 4 ].toString().padStart( 2, '0' ) }:\
+				${ timer[ 5 ].toString().padStart( 2, '0' ) }]\n`;
+			this._stream?.write( ts );
+			process.stdout.write( ts );
 		}
 		let entry = `[${ timer[ 6 ].toString().padStart( 3, '0' ) }] ${ text }\n`;
 		if ( error ) {
