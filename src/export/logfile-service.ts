@@ -24,7 +24,7 @@ export default class Logfile_Service {
 			cluster.on( 'message',
 				( worker, msg ) => {
 					if ( msg.__logfile_service_log ) {
-						this.log( `{ ${ worker.process.pid.toString().padStart( 6, '0' ) }:${ worker.id.toString().padStart( 3, '0' ) } } ${ msg.text }`,
+						this.log( `{${ worker.id.toString().padStart( 3, '0' ) }:${ worker.process.pid.toString().padStart( 6, '0' ) }} ${ msg.text }`,
 							msg.error
 						);
 					}
@@ -110,7 +110,13 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }]\n`;
 			this._last_entry_timer = timer;
 		}
 		else {
-			process.send!( { __logfile_service_log: true, text: text, error: error } );
+			process.send!(
+				{
+					__logfile_service_log: true,
+					text: text,
+					error: error ? { name: error.name, message: error.message ?? error, stack: error.stack } : undefined
+				}
+			);
 		}
 	}
 
