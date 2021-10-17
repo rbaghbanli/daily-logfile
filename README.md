@@ -15,5 +15,8 @@ Logfile directory value
 ### Logfile_Service.is_utc
 True if date and time values are UTC
 
+### Logfile_Service.is_stack
+True if error stack trace is logged
+
 ### Logfile_Service.log
 Writes time indexed text with optional error into date bound file

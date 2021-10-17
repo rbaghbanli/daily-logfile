@@ -1,10 +1,10 @@
-import Logfile_Service from '../export/logfile-service';
+import { Logfile_Service } from '..';
 
-class Logfile_Service_Test {
+export class Logfile_Service_Test {
 
-	static test_log(): number {
+	test_log(): number {
 		console.log( `test data_logger.log started` );
-		let logger = new Logfile_Service( { ext: '.test.log' } );
+		const logger = new Logfile_Service( { ext: '.test.log' } );
 		[
 			[ `ABC`, new Error( 'Test Error' ) ],
 			[ 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,' +
@@ -13,7 +13,7 @@ class Logfile_Service_Test {
 				' eu fugiat nulla pariatur.', undefined ]
 		].forEach( prm => {
 			const text = prm[ 0 ] as string;
-			const error: any = prm[ 1 ];
+			const error = prm[ 1 ];
 			logger.log( text, error );
 		} );
 		console.log( `test data_logger.log finished` );

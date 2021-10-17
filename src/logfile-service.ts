@@ -1,25 +1,28 @@
 import * as fs from 'fs';
 import * as cluster from 'cluster';
 
-export default class Logfile_Service {
+export class Logfile_Service {
 
 	private _ext: string;
 	private _dir: string;
 	private _utc: boolean;
+	private _stack: boolean;
 	private _stream: fs.WriteStream | undefined;
 	private _last_entry_timer: number[] | undefined;
 
 	/**
 		Constructs logfile service instance
 		@param config optional parameterized object to format logfile name: [dir]/YYYY-MM-DD[ext]
-		    dir defaults to current working directory;
-			ext defaults to '.log';
-			utc defaults to false.
+		    dir: logfile directory, defaults to current working directory
+			ext: logfile extension, defaults to '.log'
+			utc: true to use UTC, defaults to false
+			stack: true for stack trace, defaults to false
 	*/
-	constructor( config?: { dir?: string, ext?: string, utc?: boolean } ) {
+	constructor( config?: { dir?: string, ext?: string, utc?: boolean, stack?: boolean } ) {
 		this._dir = config?.dir ?? process.cwd();
 		this._ext = config?.ext ?? '.log';
 		this._utc = config?.utc ?? false;
+		this._stack = config?.stack ?? false;
 		if ( cluster.isMaster ) {
 			cluster.on( 'message',
 				( worker, msg ) => {
@@ -48,9 +51,16 @@ export default class Logfile_Service {
 	}
 
 	/**
-		True if date and time values are UTC, false otherwise
+		True if date and time values are UTC
 	*/
 	get is_utc(): boolean {
+		return this._utc;
+	}
+
+	/**
+		True if error stack trace is logged
+	*/
+	get is_stack(): boolean {
 		return this._utc;
 	}
 
@@ -71,7 +81,7 @@ export default class Logfile_Service {
 			if ( this._last_entry_timer ) {
 				change = 0; // neither date nor time changed
 				for ( let i = 0; i < 6; ++i ) {
-					if ( timer[ i ] != this._last_entry_timer[ i ] ) {
+					if ( timer[ i ] !== this._last_entry_timer[ i ] ) {
 						change = i < 3 ? 2 : 1; // date or time changed
 						break;
 					}
@@ -101,7 +111,7 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }]\n`;
 			let entry = `[${ timer[ 6 ].toString().padStart( 3, '0' ) }] ${ text }\n`;
 			if ( error ) {
 				entry += `[<E>] ${ error.message ?? error }\n`;
-				if ( error.stack ) {
+				if ( this._stack && error.stack ) {
 					entry += `[<S>] ${ error.stack }\n`;
 				}
 			}

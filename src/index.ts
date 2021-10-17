@@ -1,1 +1,1 @@
-export { default as Logfile_Service } from './export/logfile-service';
+export { Logfile_Service } from './logfile-service';
