@@ -3,17 +3,19 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"declaration": true,
+		"esModuleInterop": true,
 		"lib": [
-			"es2017"
+			"es2020",
+			"dom"
 		],
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"noImplicitReturns": true,
 		"outDir": "./dst",
-		"sourceMap": false,
+		"sourceMap": true,
 		"strict": true,
 		"stripInternal": true,
-		"target": "es2017",
+		"target": "es2020",
 		"typeRoots": [
 			"node_modules/@types"
 		]
