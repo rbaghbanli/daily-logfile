@@ -130,9 +130,9 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }]\n`;
 			}
 			let entry = `[${ timer[ 6 ].toString().padStart( 3, '0' ) }] ${ text }\n`;
 			if ( error ) {
-				entry += `[<E>] ${ error.message ?? error }\n`;
+				entry += ` <E> ${ error.message ?? error }\n`;
 				if ( this._stack && error.stack ) {
-					entry += `[<S>] ${ error.stack }\n`;
+					entry += ` <S> ${ error.stack }\n`;
 				}
 			}
 			this._stream?.write( entry );
