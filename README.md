@@ -1,7 +1,7 @@
 # logfile-service
-Logfile Service
+Service for quick and easy cluster-aware logging to date-bound files.
 
-Service for quick and simple cluster-aware logging into date bound logfile.
+LogfileService is used for logging evebts, data or errors into locally generated logfiles.
 Each logfiles is date stamped, and log entries are time stamped to milliseconds.
 
 By default, if application is run on cluster, each node logs into separate file.
@@ -14,7 +14,7 @@ Sample code to log events and errors:
 
 ```ts
 ...
-const logger = new LogfileService( { tag: '.system', utc: true } );
+const logger = new LogfileService( { tag: 'test', utc: true } );
 ...
 logger.info( 'log some info' );
 ...

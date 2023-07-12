@@ -2,3 +2,4 @@
 .eslint.json
 tsconfig.json
 src/
+test/
