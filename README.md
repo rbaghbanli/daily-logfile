@@ -1,30 +1,40 @@
 # logfile-service
 Logfile Service
 
-Service for quick and simple data logging into date bound logfile.
-Logs are written into single file for all cluster nodes.
-If cluster option is selected then logs are written into separate files.
+Service for quick and simple cluster-aware logging into date bound logfile.
+Each logfiles is date stamped, and log entries are time stamped to milliseconds.
+
+By default, if application is run on cluster, each node logs into separate file.
+If cluster identifier is set, then logs are written into single file for all cluster nodes,
+ and log entries are stamped with worker id and process id.
 
 
-## Logfile Service
+## Logging with LogfileService
+Sample code to log events and errors:
 
-### Logfile_Service.logfile_directory
-Logfile directory
+```ts
+...
+const logger = new LogfileService( { tag: '.system', utc: true } );
+...
+logger.info( 'log some info' );
+...
+logger.log( 'logging some data', { val: 'abc', anotherValue: 'def' }, [ 1, 2, 3 ] );
+...
+logger.error( 'something went wrong', err, obj );
+...
+```
 
-### Logfile_Service.logfile_tag
-Logfile tag
+### Generated logfile
+Sample log file 2023-07-12.test.log:
 
-### Logfile_Service.logfile_extension
-Logfile extension
-
-### Logfile_Service.is_cluster
-True if each cluster node to log into separate logfile
-
-### Logfile_Service.is_stack
-True if error stack trace is logged
-
-### Logfile_Service.is_utc
-True if date and time values are UTC
-
-### Logfile_Service.log
-Writes time indexed text with optional error into date bound logfile
+```
+|14:18:57|
+|349| log some info
+|411| logging some data
+{"val":"abc","anotherValue":"def"}
+[1,2,3]
+|14:18:58|
+|010| something went wrong
+Test Error
+{"objProp1":"a"}
+```
