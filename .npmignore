@@ -3,3 +3,4 @@
 tsconfig.*
 src/
 test/
+.vscode/
