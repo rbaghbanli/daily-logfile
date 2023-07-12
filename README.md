@@ -1,7 +1,7 @@
 # logfile-service
-Service for quick and easy cluster-aware logging to date-bound files.
+Service for quick and easy cluster-aware logging into date-bound files.
 
-LogfileService is used for logging evebts, data or errors into locally generated logfiles.
+LogfileService is used for logging events, data or errors into locally generated logfiles.
 Each logfiles is date stamped, and log entries are time stamped to milliseconds.
 
 By default, if application is run on cluster, each node logs into separate file.
