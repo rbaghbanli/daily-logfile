@@ -100,7 +100,7 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 				this._stream?.write( timestamp );
 				process.stdout.write( timestamp );
 			}
-			let entry = `|${ timer[ 6 ].toString().padStart( 3, '0' ) }| ${ text }\n${ values.map( v => `${ this.toString( v ) }\n` ).join( '' ) }`;
+			const entry = `|${ timer[ 6 ].toString().padStart( 3, '0' ) }| ${ text }\n${ values.map( v => `${ this.toString( v ) }\n` ).join( '' ) }`;
 			this._stream?.write( entry );
 			process.stdout.write( entry );
 			this._lastEntryTimer = timer;

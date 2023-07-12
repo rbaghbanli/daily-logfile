@@ -1,5 +1,5 @@
 *.tgz
-.eslint.json
-tsconfig.json
+.eslintrc.*
+tsconfig.*
 src/
 test/
