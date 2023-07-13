@@ -18,6 +18,7 @@ export class LogfileService {
 	private _ext: string;
 	private _utc: boolean;
 	private _stack: boolean;
+	private _stdout: boolean;
 	private _level: LogLevel;
 	private _cluster: string;
 	private _stream: fs.WriteStream | undefined;
@@ -25,22 +26,24 @@ export class LogfileService {
 
 	/**
 		Constructs logfile service instance
-		@param config optional parameterized object to format logfile name: [dir]/YYYY-MM-DD.[tag].[ext]
-		    dir: logfile directory, defaults to current working directory
-			tag: logfile tag to identify logging application, defaults to empty string
-			ext: logfile extension, defaults to 'log'
-			utc: true to use UTC, defaults to false
-			stack: if true writes stack trace if available, defaults to false
-			level: minimum log level, errors and failures are always logged, defaults to LogLevel.INFO
+		@param config Optional parameterized object to format logfile name [dir]/YYYY-MM-DD.[tag].[ext], and setup logging options:
+		    dir: logfile directory, defaults to current working directory.
+			tag: logfile tag to identify logging application, defaults to empty string.
+			ext: logfile extension, defaults to 'log'.
+			utc: true to use UTC, defaults to false.
+			stack: if true writes stack trace if available, defaults to false.
+			stdout: if true additionally writes logs to stdout, defaults to false.
+			level: minimum log level, errors and failures are always logged, defaults to LogLevel.INFO.
 			cluster: cluster identifier if logs to be written into a single file for all cluster nodes,
-				by default each cluster node logs into separate logfile [dir]/YYYY-MM-DD.[tag].[worker-id].[ext]
+				by default each cluster node logs into separate logfile [dir]/YYYY-MM-DD.[tag].[worker-id].[ext].
 	*/
-	constructor( config?: { dir?: string, tag?: string, ext?: string, utc?: boolean, stack?: boolean, level?: LogLevel, cluster?: string } ) {
+	constructor( config?: { dir?: string, tag?: string, ext?: string, utc?: boolean, stack?: boolean, stdout?: boolean, level?: LogLevel, cluster?: string } ) {
 		this._dir = config?.dir ?? process.cwd();
 		this._tag = config?.tag ? config.tag.startsWith( '.' ) ? config.tag : `.${ config.tag }` : '';
 		this._ext = config?.ext ? config.ext.startsWith( '.' ) ? config.ext : `.${ config.ext }` : '.log';
 		this._utc = config?.utc ?? false;
 		this._stack = config?.stack ?? false;
+		this._stdout = config?.stdout ?? false;
 		this._level = config?.level ?? LogLevel.INFO;
 		this._cluster = config?.cluster ?? '';
 		if ( this._cluster && cluster.isPrimary ) {
@@ -98,11 +101,15 @@ ${ timer[ 2 ].toString().padStart( 2, '0' ) }${ this._tag }`
 ${ timer[ 4 ].toString().padStart( 2, '0' ) }:\
 ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 				this._stream?.write( timestamp );
-				process.stdout.write( timestamp );
+				if ( this._stdout ) {
+					process.stdout.write( timestamp );
+				}
 			}
 			const entry = `|${ timer[ 6 ].toString().padStart( 3, '0' ) }| ${ text }\n${ values.map( v => `${ this.toString( v ) }\n` ).join( '' ) }`;
 			this._stream?.write( entry );
-			process.stdout.write( entry );
+			if ( this._stdout ) {
+				process.stdout.write( entry );
+			}
 			this._lastEntryTimer = timer;
 		}
 		else {
@@ -114,40 +121,75 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 		}
 	}
 
+	/**
+		Writes time indexed text with optional context values into date bound file
+		@param text string to write into the log file
+		@param values optional values to record for context
+	*/
 	trace( text: string, ...values: any[] ): void {
 		if ( this._level === LogLevel.TRACE ) {
 			this.write( text, ...values );
 		}
 	}
 
+	/**
+		Writes time indexed text with optional context values into date bound file
+		@param text string to write into the log file
+		@param values optional values to record for context
+	*/
 	debug( text: string, ...values: any[] ): void {
 		if ( this._level <= LogLevel.DEBUG ) {
 			this.write( text, ...values );
 		}
 	}
 
+	/**
+		Writes time indexed text with optional context values into date bound file
+		@param text string to write into the log file
+		@param values optional values to record for context
+	*/
 	info( text: string, ...values: any[] ): void {
 		if ( this._level <= LogLevel.INFO ) {
 			this.write( text, ...values );
 		}
 	}
 
+	/**
+		Writes time indexed text with optional context values into date bound file
+		@param text string to write into the log file
+		@param values optional values to record for context
+	*/
 	log( text: string, ...values: any[] ): void {
 		if ( this._level <= LogLevel.LOG ) {
 			this.write( text, ...values );
 		}
 	}
 
+	/**
+		Writes time indexed text with optional context values into date bound file
+		@param text string to write into the log file
+		@param values optional values to record for context
+	*/
 	warn( text: string, ...values: any[] ): void {
 		if ( this._level <= LogLevel.WARNING ) {
 			this.write( text, ...values );
 		}
 	}
 
+	/**
+		Writes time indexed text with optional context values into date bound file
+		@param text string to write into the log file
+		@param values optional values to record for context
+	*/
 	error( text: string, ...values: any[] ): void {
 		this.write( text, ...values );
 	}
 
+	/**
+		Writes time indexed text with optional context values into date bound file
+		@param text string to write into the log file
+		@param values optional values to record for context
+	*/
 	fail( text: string, ...values: any[] ): void {
 		this.write( text, ...values );
 	}
@@ -185,6 +227,13 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 	*/
 	get stack(): boolean {
 		return this._stack;
+	}
+
+	/**
+		True to additionally log to stdout
+	*/
+	get stdout(): boolean {
+		return this._stdout;
 	}
 
 	/**

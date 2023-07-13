@@ -7,7 +7,7 @@ if ( cluster.isPrimary ) {
 		cluster.fork();
 	}
 }
-const logf1 = new LogfileService( { tag: '.cluster', cluster: 'abc', stack: true } );
+const logf1 = new LogfileService( { tag: '.cluster', cluster: 'abc', stack: true, stdout: true } );
 const logf2 = new LogfileService( { tag: 'test', stack: true } );
 [
 	[ `Operation testing error`, [ 'abc - context', new Error( 'Test Error' ), { a: 'abc', next: "test" }, [ 1, 2, 3 ] ] ],
