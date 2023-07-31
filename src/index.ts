@@ -4,8 +4,8 @@ import cluster from 'cluster';
 export enum LogLevel {
 	TRACE = 0,
 	DEBUG,
-	INFO,
 	LOG,
+	INFORMATION,
 	WARNING,
 	ERROR,
 	FAILURE
@@ -33,7 +33,7 @@ export class LogfileService {
 			utc: true to use UTC, defaults to false.
 			stack: if true writes stack trace if available, defaults to false.
 			stdout: if true additionally writes logs to stdout, defaults to false.
-			level: minimum log level, errors and failures are always logged, defaults to LogLevel.INFO.
+			level: minimum log level, errors and failures are always logged, defaults to LogLevel.LOG.
 			cluster: cluster identifier if logs to be written into a single file for all cluster nodes,
 				by default each cluster node logs into separate logfile [dir]/YYYY-MM-DD.[tag].[worker-id].[ext].
 	*/
@@ -44,7 +44,7 @@ export class LogfileService {
 		this._utc = config?.utc ?? false;
 		this._stack = config?.stack ?? false;
 		this._stdout = config?.stdout ?? false;
-		this._level = config?.level ?? LogLevel.INFO;
+		this._level = config?.level ?? LogLevel.LOG;
 		this._cluster = config?.cluster ?? '';
 		if ( this._cluster && cluster.isPrimary ) {
 			cluster.on( 'message',
@@ -148,8 +148,8 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 		@param text string to write into the log file
 		@param values optional values to record for context
 	*/
-	info( text: string, ...values: any[] ): void {
-		if ( this._level <= LogLevel.INFO ) {
+	log( text: string, ...values: any[] ): void {
+		if ( this._level <= LogLevel.LOG ) {
 			this.write( text, ...values );
 		}
 	}
@@ -159,8 +159,8 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 		@param text string to write into the log file
 		@param values optional values to record for context
 	*/
-	log( text: string, ...values: any[] ): void {
-		if ( this._level <= LogLevel.LOG ) {
+	info( text: string, ...values: any[] ): void {
+		if ( this._level <= LogLevel.INFORMATION ) {
 			this.write( text, ...values );
 		}
 	}

@@ -1,12 +1,14 @@
 # logfile-service
 Service for quick and easy cluster-aware logging into date-bound files.
 
-LogfileService is used for logging events, data or errors into locally generated logfiles.
+Use LogfileService to log events, data and/or errors into locally generated logfiles.
 Each logfiles is date stamped, and log entries are time stamped to milliseconds.
 
-By default, if application is run on cluster, each node logs into separate file.
+By default, if application runs on cluster, each cluster node logs into separate file.
 If cluster identifier is set, then logs are written into single file for all cluster nodes,
  and log entries are stamped with worker id and process id.
+
+Target: ES2020 [NodeJS].
 
 
 ## Logging with LogfileService
@@ -38,31 +40,24 @@ Test Error
 ```
 
 ## LogfileService configuration parameters
-dir: logfile directory, defaults to current working directory.
-
-tag: logfile tag to identify logging application, defaults to empty string.
-
-ext: logfile extension, defaults to 'log'.
-
-utc: true to use UTC, defaults to false.
-
-stack: if true writes stack trace if available, defaults to false.
-
-stdout: if true additionally writes logs to stdout, defaults to false.
-
-level: minimum log level, errors and failures are always logged, defaults to LogLevel.INFO.
-
-cluster: logfile cluster identifier if logs to be written into a single file for all cluster nodes,
-by default each cluster node logs into separate logfile [dir]/YYYY-MM-DD.[tag].[worker-id].[ext].
+* dir: Logfile directory, defaults to current working directory.
+* tag: Logfile tag to identify logging application, defaults to empty string.
+* ext: Logfile extension, defaults to 'log'.
+* utc: If true date-time values are in UTC, defaults to false.
+* stack: If true writes error stack trace if available, defaults to false.
+* stdout: If true additionally writes logs to stdout, defaults to false.
+* level: Minimum log level, errors and failures are always logged, defaults to LogLevel.LOG.
+* cluster: Logfile cluster identifier if logs to be written into a single file for all cluster nodes.
+By default, each cluster node logs into separate logfile [dir]/YYYY-MM-DD.[tag].[worker-id].[ext].
 
 If multiple instances of LogfileService are used, make sure that each instance has different dir/tag/ext combination, and cluster identifier.
 
 ## LogLevel
-LogfileService logs with the following levels:
+LogfileService allows logging with the following levels:
 * TRACE
 * DEBUG
-* INFO
 * LOG
+* INFORMATION
 * WARNING
 * ERROR
 * FAILURE
