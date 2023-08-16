@@ -1,7 +1,8 @@
 {
 	"name": "logfile-service",
-	"version": "2.1.0",
+	"version": "2.2.0",
 	"description": "Logfile Service",
+	"type": "module",
 	"main": "dst/index.js",
 	"types": "dst/index.d.ts",
 	"hopmepage": "https://github.com/rbaghbanli/logfile-service",

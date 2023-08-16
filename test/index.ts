@@ -1,5 +1,5 @@
 import cluster from 'cluster';
-import { LogfileService } from '../src';
+import { LogfileService } from '../src/index.js';
 
 if ( cluster.isPrimary ) {
 	console.log( `LogfileService testing started...\n` );
