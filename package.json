@@ -1,6 +1,6 @@
 {
 	"name": "logfile-service",
-	"version": "2.2.0",
+	"version": "2.3.0",
 	"description": "Logfile Service",
 	"type": "module",
 	"main": "dst/index.js",
@@ -18,7 +18,8 @@
 		"Logfile",
 		"Service",
 		"log",
-		"file"
+		"file",
+		"level"
 	],
 	"scripts": {
 		"lint": "eslint ./src --ext .ts",

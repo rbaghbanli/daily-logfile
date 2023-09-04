@@ -18,9 +18,9 @@ Sample code to log events and errors:
 ...
 const logger = new LogfileService( { tag: 'test', utc: true } );
 ...
+logger.error( 'something went wrong', err, obj );
 logger.info( 'log some info' );
 logger.log( 'logging some data', { val: 'abc', anotherValue: 'def' }, [ 1, 2, 3 ] );
-logger.error( 'something went wrong', err, obj );
 ...
 ```
 
@@ -56,7 +56,6 @@ If multiple instances of LogfileService are used, make sure that each instance h
 LogfileService allows logging with the following levels:
 * TRACE
 * DEBUG
-* LOG
 * INFORMATION
 * WARNING
 * ERROR
