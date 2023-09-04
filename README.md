@@ -46,7 +46,7 @@ Test Error
 * utc: If true date-time values are in UTC, defaults to false.
 * stack: If true writes error stack trace if available, defaults to false.
 * stdout: If true additionally writes logs to stdout, defaults to false.
-* level: Minimum log level, errors and failures are always logged, defaults to LogLevel.LOG.
+* level: Minimum log level, errors and failures are always logged, defaults to LogLevel.INFORMATION.
 * cluster: Logfile cluster identifier if logs to be written into a single file for all cluster nodes.
 By default, each cluster node logs into separate logfile [dir]/YYYY-MM-DD.[tag].[worker-id].[ext].
 
