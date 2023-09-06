@@ -49,7 +49,7 @@ export class LogfileService {
 			cluster.on( 'message',
 				( worker, msg ) => {
 					if ( msg.__logfile_service === this._cluster ) {
-						this.write( `<${ worker.id.toString().padStart( 3, '0' ) }:${ worker.process.pid?.toString().padStart( 6, '0' ) }> ${ msg.text }`,
+						this.log( `<${ worker.id.toString().padStart( 3, '0' ) }:${ worker.process.pid?.toString().padStart( 6, '0' ) }> ${ msg.text }`,
 							...msg.values
 						);
 					}
@@ -63,7 +63,7 @@ export class LogfileService {
 		@param text string to write into the log file
 		@param values optional values to record for context
 	*/
-	write( text: string, ...values: any[] ): void {
+	log( text: string, ...values: any[] ): void {
 		if ( cluster.isPrimary || !this._cluster ) {
 			const now = new Date();
 			const timer = this._utc
@@ -127,7 +127,7 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 	*/
 	trace( text: string, ...values: any[] ): void {
 		if ( this._level === LogLevel.TRACE ) {
-			this.write( text, ...values );
+			this.log( text, ...values );
 		}
 	}
 
@@ -138,7 +138,7 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 	*/
 	debug( text: string, ...values: any[] ): void {
 		if ( this._level <= LogLevel.DEBUG ) {
-			this.write( text, ...values );
+			this.log( text, ...values );
 		}
 	}
 
@@ -149,7 +149,7 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 	*/
 	info( text: string, ...values: any[] ): void {
 		if ( this._level <= LogLevel.INFORMATION ) {
-			this.write( text, ...values );
+			this.log( text, ...values );
 		}
 	}
 
@@ -160,7 +160,7 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 	*/
 	warn( text: string, ...values: any[] ): void {
 		if ( this._level <= LogLevel.WARNING ) {
-			this.write( text, ...values );
+			this.log( text, ...values );
 		}
 	}
 
@@ -170,7 +170,9 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 		@param values optional values to record for context
 	*/
 	error( text: string, ...values: any[] ): void {
-		this.write( text, ...values );
+		if ( this._level <= LogLevel.ERROR ) {
+			this.log( text, ...values );
+		}
 	}
 
 	/**
@@ -179,16 +181,7 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 		@param values optional values to record for context
 	*/
 	fail( text: string, ...values: any[] ): void {
-		this.write( text, ...values );
-	}
-
-	/**
-		Writes time indexed text with optional context values into date bound file
-		@param text string to write into the log file
-		@param values optional values to record for context
-	*/
-	log( text: string, ...values: any[] ): void {
-		this.write( text, ...values );
+		this.log( text, ...values );
 	}
 
 	/**
