@@ -69,8 +69,8 @@ export class LogfileService {
 		if ( this._cluster && cluster.isPrimary ) {
 			cluster.on( 'message', ( worker, msg ) => {
 				if ( msg.__logfile_service === this._cluster ) {
-					this.log( `<${ worker.id.toString().padStart( 3, '0' ) }:${ worker.process.pid?.toString().padStart( 6, '0' ) }> ${ msg.text }`,
-						...msg.values
+					this.log( `<${ worker.id.toString().padStart( 3, '0' ) }:${ worker.process.pid?.toString().padStart( 6, '0' ) }> ${ msg.message }`,
+						...msg.data
 					);
 				}
 			} );
@@ -78,11 +78,11 @@ export class LogfileService {
 	}
 
 	/**
-		Writes time indexed text with optional context values into date bound file
-		@param text string to write into the log file
-		@param values optional values to record for context
+		Writes time indexed log entry with optional context data into date bound file
+		@param message log entry
+		@param data optional context data
 	*/
-	log( text: string, ...values: any[] ): void {
+	log( message?: any, ...data: any[] ): void {
 		if ( cluster.isPrimary || !this._cluster ) {
 			const now = new Date();
 			const timer = this._utc
@@ -111,7 +111,7 @@ ${ timer[ 2 ].toString().padStart( 2, '0' ) }${ this._tag }`
 				this._stream = fs.createWriteStream( this._path, { flags: 'a' } );
 				this._stream.on( 'error', err => {
 					this._lastEntryTimer = undefined;
-					process.stderr.write( `|${ now.toISOString() }|\nfailure to write entry: ${ this._stringifyArray( values ) }\n...on error: ${ err }\n` );
+					process.stderr.write( `|${ now.toISOString() }|\nfailure to write entry: ${ this._stringifyArray( data ) }\n...on error: ${ err }\n` );
 				} );
 			}
 			if ( change > 0 ) {
@@ -123,7 +123,7 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 					process.stdout.write( timestamp );
 				}
 			}
-			const entry = `|${ timer[ 6 ].toString().padStart( 3, '0' ) }| ${ text }\n${ this._stringifyArray( values ) }`;
+			const entry = `|${ timer[ 6 ].toString().padStart( 3, '0' ) }| ${ message?.toString() }\n${ this._stringifyArray( data ) }`;
 			this._stream?.write( entry );
 			if ( this._stdout ) {
 				process.stdout.write( entry );
@@ -133,74 +133,74 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 		else {
 			process.send!( {
 				__logfile_service: this._cluster,
-				text: text,
-				values: values.map( v => this._stringify( v ) )
+				message: message?.toString(),
+				data: data.map( v => this._stringify( v ) )
 			} );
 		}
 	}
 
 	/**
-		Writes time indexed text with optional context values into date bound file
-		@param text string to write into the log file
-		@param values optional values to record for context
+		Writes time indexed log entry with optional context data into date bound file
+		@param message log entry
+		@param data optional context data
 	*/
-	trace( text: string, ...values: any[] ): void {
+	trace( message?: any, ...data: any[] ): void {
 		if ( this._level === LogLevel.TRACE ) {
-			this.log( text, ...values );
+			this.log( message, ...data );
 		}
 	}
 
 	/**
-		Writes time indexed text with optional context values into date bound file
-		@param text string to write into the log file
-		@param values optional values to record for context
+		Writes time indexed log entry with optional context data into date bound file
+		@param message log entry
+		@param data optional context data
 	*/
-	debug( text: string, ...values: any[] ): void {
+	debug( message?: any, ...data: any[] ): void {
 		if ( this._level <= LogLevel.DEBUG ) {
-			this.log( text, ...values );
+			this.log( message, ...data );
 		}
 	}
 
 	/**
-		Writes time indexed text with optional context values into date bound file
-		@param text string to write into the log file
-		@param values optional values to record for context
+		Writes time indexed log entry with optional context data into date bound file
+		@param message log entry
+		@param data optional context data
 	*/
-	info( text: string, ...values: any[] ): void {
+	info( message?: any, ...data: any[] ): void {
 		if ( this._level <= LogLevel.INFORMATION ) {
-			this.log( text, ...values );
+			this.log( message, ...data );
 		}
 	}
 
 	/**
-		Writes time indexed text with optional context values into date bound file
-		@param text string to write into the log file
-		@param values optional values to record for context
+		Writes time indexed log entry with optional context data into date bound file
+		@param message log entry
+		@param data optional context data
 	*/
-	warn( text: string, ...values: any[] ): void {
+	warn( message?: any, ...data: any[] ): void {
 		if ( this._level <= LogLevel.WARNING ) {
-			this.log( text, ...values );
+			this.log( message, ...data );
 		}
 	}
 
 	/**
-		Writes time indexed text with optional context values into date bound file
-		@param text string to write into the log file
-		@param values optional values to record for context
+		Writes time indexed log entry with optional context data into date bound file
+		@param message log entry
+		@param data optional context data
 	*/
-	error( text: string, ...values: any[] ): void {
+	error( message?: any, ...data: any[] ): void {
 		if ( this._level <= LogLevel.ERROR ) {
-			this.log( text, ...values );
+			this.log( message, ...data );
 		}
 	}
 
 	/**
-		Writes time indexed text with optional context values into date bound file
-		@param text string to write into the log file
-		@param values optional values to record for context
+		Writes time indexed log entry with optional context data into date bound file
+		@param message log entry
+		@param data optional context data
 	*/
-	fail( text: string, ...values: any[] ): void {
-		this.log( text, ...values );
+	fail( message?: any, ...data: any[] ): void {
+		this.log( message, ...data );
 	}
 
 	/**
