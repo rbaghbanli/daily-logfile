@@ -8,20 +8,22 @@ if ( cluster.isPrimary ) {
 	}
 }
 const logf1 = new LogfileService( { tag: '.cluster', cluster: 'abc', stack: true, stdout: true } );
-const logf2 = new LogfileService( { tag: 'test', stack: true } );
+const logf2 = new LogfileService( { tag: 'test', stack: true, level: 'ERROR' } );
 [
-	[ `Operation testing error`, [ 'abc - context', new Error( 'Test Error' ), { a: 'abc', next: "test" }, [ 1, 2, 3 ] ] ],
+	[ `Operation testing error`, [ 'abc - context', new Error( 'Test Error' ), { a: 'abc', next: "test" }, [ 1, 2, 3 ], 9 ] ],
 	[ `Operation generic entry`, [] ],
 	[ 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,'
 		+ ' sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco'
 		+ ' laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore'
-		+ ' eu fugiat nulla pariatur.', [ new RangeError( 'Test Range Error' ) ] ]
+		+ ' eu fugiat nulla pariatur.', [ new RangeError( 'Test Range Error' ), 100000000000n, { a: 100n, b: 'test-test' } ] ]
 ].forEach(
 	prm => {
 		const text = prm[ 0 ] as string;
 		const vals = prm[ 1 ] as any[];
-		logf1.log( text, ...vals );
-		logf2.warn( text, ...vals );
+		logf1.trace( text );
+		logf1.error( text, ...vals );
+		logf2.warn( text );
+		logf2.fail( text, ...vals );
 	}
 );
 setTimeout( () => logf1.error( 'Test 1' ), 1100 );

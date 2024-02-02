@@ -1,6 +1,6 @@
 {
 	"name": "logfile-service",
-	"version": "2.3.1",
+	"version": "2.4.0",
 	"description": "Logfile Service",
 	"type": "module",
 	"main": "dst/index.js",
@@ -37,11 +37,11 @@
 	},
 	"dependencies": {},
 	"devDependencies": {
-		"@types/node": "~18.11.9",
-		"@typescript-eslint/parser": "~5.60.0",
-		"@typescript-eslint/eslint-plugin": "~5.60.0",
-		"eslint": "~8.43.0",
-		"rimraf": "~5.0.1",
-		"typescript": "~4.7.4"
+		"@types/node": "~20.11.16",
+		"@typescript-eslint/parser": "~6.20.0",
+		"@typescript-eslint/eslint-plugin": "~6.20.0",
+		"eslint": "~8.56.0",
+		"rimraf": "~5.0.5",
+		"typescript": "~5.3.3"
 	}
 }
