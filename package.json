@@ -1,10 +1,11 @@
 {
 	"name": "logfile-service",
-	"version": "2.4.1",
+	"version": "2.4.2",
 	"description": "Logfile Service",
-	"type": "module",
-	"main": "dst/index.js",
+	"main": "dst/cjs/index.js",
+	"module": "dst/index.js",
 	"types": "dst/index.d.ts",
+    "type": "module",
 	"hopmepage": "https://github.com/rbaghbanli/logfile-service",
 	"bugs": "https://github.com/rbaghbanli/logfile-service/issues",
 	"author": "Riad Baghbanli <riad@baghbanli.com>",
@@ -24,10 +25,10 @@
 	"scripts": {
 		"lint": "eslint ./src --ext .ts",
 		"lintfix": "eslint ./src --ext .ts --fix",
-		"clean": "rimraf --glob dst/* && rimraf --glob *.tgz",
-		"build": "tsc --build",
-		"prepare": "npm run clean && npm run build",
-		"pretest": "npm run clean && tsc --build tsconfig.test.json",
+		"prebuild": "rimraf --glob dst/* && rimraf --glob *.tgz",
+		"build": "tsc --build && tsc --build tsconfig-cjs.json",
+		"prepare": "npm run build && copyfiles ./cjs/package.json ./dst",
+		"pretest": "npm run prebuild && tsc --build tsconfig-test.json",
 		"test": "cd dst && node test"
 	},
 	"license": "MIT",
@@ -35,11 +36,18 @@
 		"type": "git",
 		"url": "https://github.com/rbaghbanli/logfile-service.git"
 	},
+	"exports": {
+		".": {
+			"import": "./dst/index.js",
+			"require": "./dst/cjs/index.js"
+		}
+	},
 	"dependencies": {},
 	"devDependencies": {
 		"@types/node": "~20.11.16",
 		"@typescript-eslint/parser": "~6.20.0",
 		"@typescript-eslint/eslint-plugin": "~6.20.0",
+		"copyfiles": "~2.4.1",
 		"eslint": "~8.56.0",
 		"rimraf": "~5.0.5",
 		"typescript": "~5.3.3"

@@ -1,12 +1,12 @@
 {
 	"extends": "./tsconf.json",
 	"compilerOptions": {
-		"declaration": true,
+		"declaration": false,
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"outDir": "./dst",
 	},
 	"include": [
-		"src/**/*"
+		"test/**/*"
 	]
 }
