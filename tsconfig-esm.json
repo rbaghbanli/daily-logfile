@@ -1,9 +1,9 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"module": "CommonJS",
-		"moduleResolution": "Node",
-		"outDir": "./dst/cjs",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"outDir": "./dst",
 	},
 	"include": [
 		"src/**/*"

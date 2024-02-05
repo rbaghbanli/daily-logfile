@@ -8,7 +8,7 @@ By default, if application runs on cluster, each cluster node logs into separate
 If cluster identifier is set, then logs are written into single file for all cluster nodes,
  and log entries are stamped with worker id and process id.
 
-Target: ES2022 [NodeJS][ESM,CJS].
+Target: ES2022 [NodeJS][ESM+CJS].
 
 
 ## Logging functions

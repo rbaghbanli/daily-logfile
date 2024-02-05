@@ -1,6 +1,6 @@
 {
 	"name": "logfile-service",
-	"version": "2.4.2",
+	"version": "2.4.3",
 	"description": "Logfile Service",
 	"main": "dst/cjs/index.js",
 	"module": "dst/index.js",
@@ -26,7 +26,7 @@
 		"lint": "eslint ./src --ext .ts",
 		"lintfix": "eslint ./src --ext .ts --fix",
 		"prebuild": "rimraf --glob dst/* && rimraf --glob *.tgz",
-		"build": "tsc --build && tsc --build tsconfig-cjs.json",
+		"build": "tsc --build tsconfig-esm.json && tsc --build tsconfig-cjs.json",
 		"prepare": "npm run build && copyfiles ./cjs/package.json ./dst",
 		"pretest": "npm run prebuild && tsc --build tsconfig-test.json",
 		"test": "cd dst && node test"
