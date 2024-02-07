@@ -2,7 +2,7 @@
 Service for quick and easy cluster-aware logging into date-bound files.
 
 Use LogfileService to log events, data and/or errors into locally generated logfiles.
-Each logfiles is date stamped, and log entries are time stamped to milliseconds.
+Each logfile is date stamped and contains logs only for that date. Log entries are time stamped to milliseconds.
 
 By default, if application runs on cluster, each cluster node logs into separate file.
 If cluster identifier is set, then logs are written into single file for all cluster nodes,
@@ -12,11 +12,12 @@ Target: ES2022 [NodeJS][ESM+CJS].
 
 
 ## Logging functions
-Functions **trace**, **debug**, **info**, **warn**, **error** are logging conditionally on specified minimum log level.
-Functions **fail** and **log** are logging unconditionally.
+Use functions **trace**, **debug**, **info**, **warn**, and **error** to write logs conditionally, depending on specified minimum log level.
+For example, if minimum log level is **INFORMATION** then **trace** and **debug** will not write into a logfile.
+Use functions **fail** and **log** to write logs unconditionally.
 
 
-## LogLevel enum
+## LogLevel enumerationks
 LogfileService allows logging with the following levels:
 * TRACE
 * DEBUG
