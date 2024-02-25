@@ -111,7 +111,8 @@ ${ timer[ 2 ].toString().padStart( 2, '0' ) }${ this._tag }`
 				this._stream = fs.createWriteStream( this._path, { flags: 'a' } );
 				this._stream.on( 'error', err => {
 					this._lastEntryTimer = undefined;
-					process.stderr.write( `|${ now.toISOString() }|\nfailure to write entry: ${ this._stringifyArray( data ) }\n...on error: ${ err }\n` );
+					process.stderr.write( `|${ now.toISOString() }|\nfailure to write entry: \
+${ this._stringify( message ) }\n${ this._stringifyArray( data ) }\n...on error: ${ err }\n` );
 				} );
 			}
 			if ( change > 0 ) {
@@ -123,7 +124,7 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 					process.stdout.write( timestamp );
 				}
 			}
-			const entry = `|${ timer[ 6 ].toString().padStart( 3, '0' ) }| ${ message?.toString() }\n${ this._stringifyArray( data ) }`;
+			const entry = `|${ timer[ 6 ].toString().padStart( 3, '0' ) }| ${ this._stringify( message ) }\n${ this._stringifyArray( data ) }`;
 			this._stream?.write( entry );
 			if ( this._stdout ) {
 				process.stdout.write( entry );
@@ -133,7 +134,7 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 		else {
 			process.send!( {
 				__logfile_service: this._cluster,
-				message: message?.toString(),
+				message: this._stringify( message ),
 				data: data.map( v => this._stringify( v ) )
 			} );
 		}

@@ -11,7 +11,8 @@ const logf1 = new LogfileService( { tag: '.cluster', cluster: 'abc', stack: true
 const logf2 = new LogfileService( { tag: 'test', stack: true, level: 'ERROR' } );
 [
 	[ `Operation testing error`, [ 'abc - context', new Error( 'Test Error' ), { a: 'abc', next: "test" }, [ 1, 2, 3 ], 9 ] ],
-	[ `Operation generic entry`, [] ],
+	[ { message: `Operation generic entry` }, [] ],
+	[ { value: `Operation generic entry` }, [] ],
 	[ 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,'
 		+ ' sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco'
 		+ ' laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore'
