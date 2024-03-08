@@ -17,7 +17,7 @@ For example, if minimum log level is **INFORMATION** then **trace** and **debug*
 Use functions **fail** and **log** to write logs unconditionally.
 
 
-## LogLevel enumerationks
+## LogLevel enumeration
 LogfileService allows logging with the following levels:
 * TRACE
 * DEBUG
