@@ -10,6 +10,17 @@ export enum LogLevel {
 	FAILURE,
 }
 
+export interface LogfileConfig {
+	dir?: string,
+	tag?: string,
+	ext?: string,
+	utc?: boolean,
+	stack?: boolean,
+	stdout?: boolean,
+	level?: LogLevel | 'TRACE' | 'DEBUG' | 'INFORMATION' | 'WARNING' | 'ERROR' | 'FAILURE',
+	cluster?: string,
+}
+
 export class LogfileService {
 
 	private _dir: string;
@@ -37,15 +48,7 @@ export class LogfileService {
 			cluster: cluster identifier if logs to be written into a single file for all cluster nodes,
 				by default each cluster node logs into separate logfile [dir]/YYYY-MM-DD.[tag].[worker-id].[ext].
 	*/
-	constructor( config?: {
-		dir?: string,
-		tag?: string,
-		ext?: string,
-		utc?: boolean,
-		stack?: boolean,
-		stdout?: boolean,
-		level?: LogLevel | 'TRACE' | 'DEBUG' | 'INFORMATION' | 'WARNING' | 'ERROR' | 'FAILURE',
-		cluster?: string } ) {
+	constructor( config?: LogfileConfig ) {
 		this._dir = config?.dir ?? process.cwd();
 		this._tag = config?.tag ? config.tag.startsWith( '.' ) ? config.tag : `.${ config.tag }` : '';
 		this._ext = config?.ext ? config.ext.startsWith( '.' ) ? config.ext : `.${ config.ext }` : '.log';

@@ -2,7 +2,7 @@
 Service for quick and easy cluster-aware logging into date-bound files.
 
 Use LogfileService to log events, data and/or errors into locally generated logfiles.
-Each logfile is date stamped and contains logs only for that date. Log entries are time stamped to milliseconds.
+Each logfile is date stamped and only contains logs for that date. Log entries are time stamped to milliseconds.
 
 By default, if application runs on cluster, each cluster node logs into separate file.
 If cluster identifier is set, then logs are written into single file for all cluster nodes,
@@ -36,7 +36,8 @@ LogfileService allows logging with the following levels:
 * stdout: If true additionally writes logs to stdout, defaults to false.
 * level: Minimum log level, errors and failures are always logged, defaults to INFORMATION.
 * cluster: Logfile cluster identifier if logs to be written into a single file for all cluster nodes.
-By default, each cluster node logs into separate logfile [dir]/YYYY-MM-DD.[tag].[worker-id].[ext].
+By default, each cluster node logs into separate logfile [dir|CWD]/YYYY-MM-DD[.tag].[worker-id].[ext|log],
+ where CWD is current working directory.
 
 If multiple instances of LogfileService are used, make sure that each instance has different dir/tag/ext combination, and cluster identifier.
 
@@ -46,12 +47,12 @@ Sample code to log events and errors:
 
 ```ts
 ...
-const logger = new LogfileService( { tag: 'test', utc: true } );
+const logf = new LogfileService( { tag: 'test', utc: true } );
 ...
-logger.info( 'log some info' );
-logger.log( 'logging some data', { val: 'abc', anotherValue: 'def' }, [ 1, 2 ] );
+logf.info( 'log some info' );
+logf.log( 'logging some data', { val: 'abc', anotherValue: 'def' }, [ 1, 2 ] );
 ...
-logger.error( 'something went wrong', new Error( 'Test Error' ), obj );
+logf.error( 'something went wrong', new Error( 'Test Error' ), obj );
 ...
 ```
 

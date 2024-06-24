@@ -1,6 +1,6 @@
 {
 	"name": "logfile-service",
-	"version": "2.4.5",
+	"version": "2.4.6",
 	"description": "Logfile Service",
 	"main": "dst/cjs/index.js",
 	"module": "dst/index.js",
