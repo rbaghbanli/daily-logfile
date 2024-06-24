@@ -1,13 +1,13 @@
 {
-	"name": "log-file",
+	"name": "daily-logfile",
 	"version": "1.0.0",
-	"description": "LogFile writes logs into date-stamped files",
+	"description": "Daily Logfile Logger writes logs into daily files",
 	"main": "dst/cjs/index.js",
 	"module": "dst/index.js",
 	"types": "dst/index.d.ts",
 	"type": "module",
-	"hopmepage": "https://github.com/rbaghbanli/log-file",
-	"bugs": "https://github.com/rbaghbanli/log-file/issues",
+	"hopmepage": "https://github.com/rbaghbanli/daily-logfile",
+	"bugs": "https://github.com/rbaghbanli/daily-logfile/issues",
 	"author": "Riad Baghbanli <riad@baghbanli.com>",
 	"contributors": [
 		{
@@ -33,7 +33,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/rbaghbanli/log-file.git"
+		"url": "https://github.com/rbaghbanli/daily-logfile.git"
 	},
 	"exports": {
 		".": {

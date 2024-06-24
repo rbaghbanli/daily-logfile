@@ -21,7 +21,7 @@ export interface LogConfig {
 	cluster?: string,
 }
 
-export class LogFile {
+export class Logger {
 
 	private _dir: string;
 	private _tag: string;
@@ -278,7 +278,7 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 					? this._stack && value.stack
 						? `${ value.message ?? value.name ?? value }\n${ value.stack }`
 						: `${ value.message ?? value.name }`
-					: JSON.stringify( value, LogFile._replace );
+					: JSON.stringify( value, Logger._replace );
 		}
 		catch ( err ) {
 			return value.toString();

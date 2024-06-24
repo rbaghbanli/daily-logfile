@@ -1,14 +1,14 @@
 import cluster from 'cluster';
-import { LogFile } from '../src/index.js';
+import { Logger } from '../src/index.js';
 
 if ( cluster.isPrimary ) {
-	console.log( `LogFile testing started...\n` );
+	console.log( `Logger testing started...\n` );
 	for ( let i = 0; i < 2; ++i ) {
 		cluster.fork();
 	}
 }
-const logf1 = new LogFile( { tag: '.cluster', cluster: 'abc', stack: true, stdout: true } );
-const logf2 = new LogFile( { tag: 'test', stack: true, level: 'ERROR' } );
+const logf1 = new Logger( { tag: '.cluster', cluster: 'abc', stack: true, stdout: true } );
+const logf2 = new Logger( { tag: 'test', stack: true, level: 'ERROR' } );
 [
 	[ `Operation testing error`, [ 'abc - context', new Error( 'Test Error' ), { a: 'abc', next: "test" }, [ 1, 2, 3 ], 9 ] ],
 	[ { message: `Operation generic entry` }, [] ],
