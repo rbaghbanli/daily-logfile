@@ -10,7 +10,7 @@ export enum LogLevel {
 	FAILURE,
 }
 
-export interface LogfileConfig {
+export interface LogConfig {
 	dir?: string,
 	tag?: string,
 	ext?: string,
@@ -21,7 +21,7 @@ export interface LogfileConfig {
 	cluster?: string,
 }
 
-export class LogfileService {
+export class LogFile {
 
 	private _dir: string;
 	private _tag: string;
@@ -48,7 +48,7 @@ export class LogfileService {
 			cluster: cluster identifier if logs to be written into a single file for all cluster nodes,
 				by default each cluster node logs into separate logfile [dir]/YYYY-MM-DD.[tag].[worker-id].[ext].
 	*/
-	constructor( config?: LogfileConfig ) {
+	constructor( config?: LogConfig ) {
 		this._dir = config?.dir ?? process.cwd();
 		this._tag = config?.tag ? config.tag.startsWith( '.' ) ? config.tag : `.${ config.tag }` : '';
 		this._ext = config?.ext ? config.ext.startsWith( '.' ) ? config.ext : `.${ config.ext }` : '.log';
@@ -278,7 +278,7 @@ ${ timer[ 5 ].toString().padStart( 2, '0' ) }|\n`;
 					? this._stack && value.stack
 						? `${ value.message ?? value.name ?? value }\n${ value.stack }`
 						: `${ value.message ?? value.name }`
-					: JSON.stringify( value, LogfileService._replace );
+					: JSON.stringify( value, LogFile._replace );
 		}
 		catch ( err ) {
 			return value.toString();

@@ -1,7 +1,7 @@
-# logfile-service
-Service for quick and easy cluster-aware logging into date-bound files.
+# log-file
+Quick and simple cluster-aware logging into date-stamped files.
 
-Use LogfileService to log events, data and/or errors into locally generated logfiles.
+Use LogFile to log events, data and/or errors into locally generated logfiles.
 Each logfile is date stamped and only contains logs for that date. Log entries are time stamped to milliseconds.
 
 By default, if application runs on cluster, each cluster node logs into separate file.
@@ -18,7 +18,7 @@ Use functions **fail** and **log** to write logs unconditionally.
 
 
 ## LogLevel enumeration
-LogfileService allows logging with the following levels:
+LogFile allows logging with the following levels:
 * TRACE
 * DEBUG
 * INFORMATION
@@ -27,7 +27,7 @@ LogfileService allows logging with the following levels:
 * FAILURE
 
 
-## LogfileService configuration parameters
+## LogFile configuration parameters
 * dir: Logfile directory, defaults to current working directory.
 * tag: Logfile tag to identify logging application, defaults to empty string.
 * ext: Logfile extension, defaults to 'log'.
@@ -39,15 +39,15 @@ LogfileService allows logging with the following levels:
 By default, each cluster node logs into separate logfile [dir|CWD]/YYYY-MM-DD[.tag].[worker-id].[ext|log],
  where CWD is current working directory.
 
-If multiple instances of LogfileService are used, make sure that each instance has different dir/tag/ext combination, and cluster identifier.
+If multiple instances of LogFile are used, make sure that each instance has different dir/tag/ext combination, and cluster identifier.
 
 
-## How to use LogfileService
+## How to use LogFile
 Sample code to log events and errors:
 
 ```ts
 ...
-const logf = new LogfileService( { tag: 'test', utc: true } );
+const logf = new LogFile( { tag: 'test', utc: true } );
 ...
 logf.info( 'log some info' );
 logf.log( 'logging some data', { val: 'abc', anotherValue: 'def' }, [ 1, 2 ] );
